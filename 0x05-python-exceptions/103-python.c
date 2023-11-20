@@ -1,46 +1,49 @@
 #include <Python.h>
 
+/* Function prototypes */
+void print_python_bytes(PyObject *p);
+void print_python_float(PyObject *p);
+
+
+
 /**
- * print_python_list - Prints information about a Python list
- * @p: Pointer to a Python object
+ * print_python_list - Prints basic info about Python lists.
+ * @p: A PyObject list object.
  */
 void print_python_list(PyObject *p)
 {
-Py_ssize_t i;
+        Py_ssize_t size, alloc, i;
+        const char *type;
+        PyListObject *list = (PyListObject *)p;
+        PyVarObject *var = (PyVarObject *)p;
 
-if (!PyList_Check(p))
-{
-	fprintf(stderr, "[ERROR] Invalid List Object\n");
+        size = var->ob_size;
+        alloc = list->allocated;
+
+        fflush(stdout);
+
+        printf("[*] Python list info\n");
+        if (strcmp(p->ob_type->tp_name, "list") != 0)
+        {
+                printf("  [ERROR] Invalid List Object\n");
+                return;
+        }
+
+        printf("[*] Size of the Python List = %ld\n", size);
+        printf("[*] Allocated = %ld\n", alloc);
+
+        for (i = 0; i < size; i++)
+        {
+                type = list->ob_item[i]->ob_type->tp_name;
+                printf("Element %ld: %s\n", i, type);
+                if (strcmp(type, "bytes") == 0)
+                        print_python_bytes(list->ob_item[i]);
+                else if (strcmp(type, "float") == 0)
+                        print_python_float(list->ob_item[i]);
+        }
 }
 
-printf("[*] Python list info\n");
-printf("[*] Size of the Python List = %ld\n", PyList_Size(p));
-printf("[*] Allocated = %ld\n", ((PyListObject *)p)->allocated);
 
-for (i = 0; i < PyList_Size(p); ++i)
-{
-	PyObject *item = PyList_GetItem(p, i);
-
-	printf("Element %ld: %s\n", i, Py_TYPE(item)->tp_name);
-
-	if (PyBytes_Check(item))
-	{
-		printf("[.] bytes object info\n");
-		printf("  size: %ld\n", PyBytes_Size(item));
-
-		if (PyBytes_Size(item) > 10)
-			printf("  trying string: %.*s...\n", 10, PyBytes_AsString(item));
-		else
-			printf("  trying string: %.*s\n", (int)PyBytes_Size(item),
-			PyBytes_AsString(item));
-
-		printf("  first 10 bytes: ");
-		for (int j = 0; j < 10 && j < PyBytes_Size(item); ++j)
-			printf("%02x ", (unsigned char)PyBytes_AsString(item)[j]);
-		printf("\n");
-	}
-}
-}
 
 /**
  * print_python_bytes - Prints information about a Python bytes object
@@ -69,6 +72,8 @@ for (i = 0; i < 10 && i < PyBytes_Size(p); ++i)
 printf("\n");
 }
 
+
+
 /**
  * print_python_float - Prints information about a Python float object
  * @p: Pointer to a Python object
@@ -83,4 +88,3 @@ if (!PyFloat_Check(p))
 printf("[.] float object info\n");
 printf("  value: %f\n", PyFloat_AsDouble(p));
 }
-
