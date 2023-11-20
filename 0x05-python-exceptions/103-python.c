@@ -24,7 +24,6 @@ alloc = list->allocated;
 setbuf(stdout, NULL);
 printf("[*] Python list info\n");
 
-printf("[*] Python list info\n");
 if (strcmp(p->ob_type->tp_name, "list") != 0)
 {
 	printf("  [ERROR] Invalid List Object\n");
@@ -35,7 +34,7 @@ printf("[*] Allocated = %ld\n", alloc);
 
 for (i = 0; i < size; i++)
 {
-	type = Py_TYPE(list->ob_item[i])->tp_name;
+	type = list->ob_item[i]->ob_type->tp_name;
 	printf("Element %ld: %s\n", i, type);
 	if (strcmp(type, "bytes") == 0)
 		print_python_bytes(list->ob_item[i]);
