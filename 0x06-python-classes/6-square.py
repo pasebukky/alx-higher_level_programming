@@ -9,10 +9,10 @@ class Square:
         Create an instance of Square
         Args:
             size (int) : size of the square
-            position (int) : shows the x and y coordinates
+            position (int, int) : shows the x and y coordinates
         """
-        self.__size = size
-        self.__position = position
+        self.size = size
+        self.position = position
 
     @property
     def size(self):
