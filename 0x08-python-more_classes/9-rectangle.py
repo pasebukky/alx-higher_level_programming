@@ -13,6 +13,11 @@ class Rectangle:
         self.width = width
         Rectangle.number_of_instances += 1
 
+    @classmethod
+    def square(cls, size=0):
+        """ Create a new Rectangle with width == height == size """
+        return cls(size, size)
+
     @staticmethod
     def bigger_or_equal(rect_1, rect_2):
         """ Find the bigger Rectangle based on area """
@@ -90,8 +95,3 @@ class Rectangle:
             return 0
         else:
             return (2 * (self.__height + self.__width))
-
-    @classmethod
-    def square(cls, size=0):
-        """ Creates a new Rectangle instance with width == height == size """
-        return cls(size, size)
