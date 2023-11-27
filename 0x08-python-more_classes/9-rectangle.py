@@ -44,11 +44,6 @@ class Rectangle:
         """ Returns internal string representation of a Rectangle """
         return "Rectangle({}, {})".format(self.__width, self.__height)
 
-    def __del__(self):
-        """ Delete the width of a Rectangle instance """
-        print("Bye rectangle...")
-        Rectangle.number_of_instances -= 1
-
     @property
     def width(self):
         """ Gets the width of a Rectangle instance """
