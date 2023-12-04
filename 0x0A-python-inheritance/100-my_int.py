@@ -3,6 +3,8 @@
 
 
 class MyInt(int):
+    """ Invert the int operators """
+
     def __eq__(self, value):
         """ invert the value of equals to """
         return self.real != value
