@@ -19,6 +19,7 @@ class Student:
         Args:
             attrs : The attributes to represent.
         """
-        if attrs and all(isinstance(attr, str) for attr in attrs):
+        if (type(attrs) is list and
+                all(type(ele) is str for ele in attrs)):
             return ({k: getattr(self, k) for k in attrs if hasattr(self, k)})
         return (self.__dict__)
