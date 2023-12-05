@@ -1,5 +1,8 @@
 #!/usr/bin/python3
-""" Define a script that reads stdin line by line and computes a given metrics"""
+""" 
+Define a script that reads stdin line
+by line and computes a given metrics
+"""
 
 
 def print_stats(size, status_codes):
