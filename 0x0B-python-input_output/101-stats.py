@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-""" 
+"""
 Define a script that reads stdin line
-by line and computes a given metrics
+by line and computes a given metric
 """
 
 
