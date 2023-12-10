@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Define a class named Base """
 import json
+import csv
 
 
 class Base:
@@ -75,5 +76,34 @@ class Base:
                          in list_of_dicts]
             return instances
 
+        except FileNotFoundError:
+            return []
+
+    @classmethod
+    def save_to_file_csv(cls, list_objs):
+        filename = cls.__name__ + ".csv"
+        with open(filename, mode="w", newline="", encoding="utf-8") as file:
+            writer = csv.writer(file)
+            if list_objs is not None:
+                for obj in list_objs:
+                    if cls.__name__ == "Rectangle":
+                        writer.writerow([obj.id, obj.width, obj.height, obj.x,
+                                         obj.y])
+                    elif cls.__name__ == "Square":
+                        writer.writerow([obj.id, obj.size, obj.x, obj.y])
+
+    @classmethod
+    def load_from_file_csv(cls):
+        filename = cls.__name__ + ".csv"
+        try:
+            with open(filename, "r", newline="", encoding="utf-8") as file:
+                reader = csv.reader(file)
+                if cls.__name__ == "Rectangle":
+                    return [cls.create(id=int(row[0]), width=int(row[1]),
+                            height=int(row[2]), x=int(row[3]), y=int(row[4]))
+                            for row in reader]
+                elif cls.__name__ == "Square":
+                    return [cls.create(id=int(row[0]), size=int(row[1]),
+                            x=int(row[2]), y=int(row[3])) for row in reader]
         except FileNotFoundError:
             return []

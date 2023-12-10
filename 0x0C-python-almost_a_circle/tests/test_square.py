@@ -6,6 +6,8 @@ from models.square import Square
 
 
 """ Create a class SquareTest """
+
+
 class TestSquare(unittest.TestCase):
     """ Define unittest for square model """
     def test_initialization(self):
@@ -17,6 +19,7 @@ class TestSquare(unittest.TestCase):
 
         s3 = Square(3, 1, 3)
         self.assertEqual(s3.id, 3)
+
 
 if __name__ == '__main__':
     unittest.main()

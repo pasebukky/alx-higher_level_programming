@@ -48,6 +48,7 @@ class TestRectangle(unittest.TestCase):
         expected_str = "[Rectangle] (7) 1/3 - 4/2"
         self.assertEqual(str(r), expected_str)
 
+
 class TestRectangle_stdout(unittest.TestCase):
     @staticmethod
     def capture_stdout(obj, method, *args, **kwargs):
@@ -62,6 +63,7 @@ class TestRectangle_stdout(unittest.TestCase):
         captured_output.seek(0)
         return captured_output
 
+
 class TestRectangleValidation(unittest.TestCase):
     """ Define unittest for validation of the Rectangle model """
     def test_invalid_width_and_height_type(self):
@@ -70,7 +72,23 @@ class TestRectangleValidation(unittest.TestCase):
         self.assertEqual(str(context.exception), "width must be an integer")
 
         with self.assertRaises(TypeError) as context:
+            Rectangle(None, 2)
+        self.assertEqual(str(context.exception), "width must be an integer")
+
+        with self.assertRaises(TypeError) as context:
+            Rectangle(1.2, 2)
+        self.assertEqual(str(context.exception), "width must be an integer")
+
+        with self.assertRaises(TypeError) as context:
             Rectangle(10, "2")
+        self.assertEqual(str(context.exception), "height must be an integer")
+
+        with self.assertRaises(TypeError) as context:
+            Rectangle(5, None)
+        self.assertEqual(str(context.exception), "height must be an integer")
+
+        with self.assertRaises(TypeError) as context:
+            Rectangle(1, 2.1)
         self.assertEqual(str(context.exception), "height must be an integer")
 
     def test_invalid_width_and_height_value(self):
@@ -114,6 +132,7 @@ class TestRectangleValidation(unittest.TestCase):
             Rectangle(10, 2, 3, -1)
         self.assertEqual(str(context.exception), "y must be >= 0")
 
+
 class TestRectangleArea(unittest.TestCase):
     """ Define unittests for Rectangle class area method """
     def test_area(self):
@@ -125,6 +144,7 @@ class TestRectangleArea(unittest.TestCase):
 
         r3 = Rectangle(8, 7, 0, 0, 12)
         self.assertEqual(r3.area(), 56)
+
 
 class TestRectangleDisplay(unittest.TestCase):
     """ Define unittests for Rectangle class display method """
@@ -145,12 +165,14 @@ class TestRectangleDisplay(unittest.TestCase):
             sys.stdout = sys.__stdout__
             self.assertEqual(captured_output.getvalue(), expected_output_r2)
 
+
 class TestRectangleStr(unittest.TestCase):
     """Define unit tests for Rectangle class __str__ method"""
     def test_str_method_width_and_height(self):
         r = Rectangle(4, 6)
 
-        with TestRectangle_stdout.capture_stdout(r, "print") as captured_output:
+        with TestRectangle_stdout.capture_stdout(r, "print")\
+                as captured_output:
             correct_output = "[Rectangle] ({}) 0/0 - 4/6\n".format(r.id)
             self.assertEqual(correct_output, captured_output.getvalue())
 
@@ -161,10 +183,11 @@ class TestRectangleStr(unittest.TestCase):
     def test_str_method_width_height_and_x(self):
         r = Rectangle(4, 6, 1)
 
-        with TestRectangle_stdout.capture_stdout(r, "print") as captured_output:
+        with TestRectangle_stdout.capture_stdout(r, "print")\
+                as captured_output:
             correct_output = "[Rectangle] ({}) 1/0 - 4/6\n".format(r.id)
             self.assertEqual(correct_output, captured_output.getvalue())
-    
+
         str_representation = str(r)
         correct_output = "[Rectangle] ({}) 1/0 - 4/6".format(r.id)
         self.assertEqual(correct_output, str_representation)
@@ -172,7 +195,8 @@ class TestRectangleStr(unittest.TestCase):
     def test_str_method_width_height_x_and_y(self):
         r = Rectangle(4, 6, 1, 2)
 
-        with TestRectangle_stdout.capture_stdout(r, "print") as captured_output:
+        with TestRectangle_stdout.capture_stdout(r, "print")\
+                as captured_output:
             correct_output = "[Rectangle] ({}) 1/2 - 4/6\n".format(r.id)
             self.assertEqual(correct_output, captured_output.getvalue())
 
@@ -183,13 +207,15 @@ class TestRectangleStr(unittest.TestCase):
     def test_str_method_width_height_x_y_and_id(self):
         r = Rectangle(4, 6, 1, 2, 5)
 
-        with TestRectangle_stdout.capture_stdout(r, "print") as captured_output:
+        with TestRectangle_stdout.capture_stdout(r, "print")\
+                as captured_output:
             correct_output = "[Rectangle] (5) 1/2 - 4/6\n"
             self.assertEqual(correct_output, captured_output.getvalue())
 
         str_representation = str(r)
         correct_output = "[Rectangle] (5) 1/2 - 4/6"
         self.assertEqual(correct_output, str_representation)
+
 
 if __name__ == '__main__':
     unittest.main()
