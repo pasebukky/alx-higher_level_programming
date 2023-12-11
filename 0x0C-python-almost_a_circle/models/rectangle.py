@@ -92,14 +92,14 @@ class Rectangle(Base):
                 self.y, self.width, self.height))
 
     def update(self, *args, **kwargs):
-    """Update the Rectangle instance attributes."""
-    attrs = ['id', 'width', 'height', 'x', 'y']
-    for i, arg in enumerate(args):
-        setattr(self, attrs[i], arg)
+        """Update the Rectangle instance attributes."""
+        attrs = ['id', 'width', 'height', 'x', 'y']
+        for i, arg in enumerate(args):
+            setattr(self, attrs[i], arg)
 
-    for key, value in kwargs.items():
-        if key in attrs:
-            setattr(self, key, value)
+        for key, value in kwargs.items():
+            if key in attrs:
+                setattr(self, key, value)
 
     def to_dictionary(self):
         """ Returs the dictionary representation of a rectangle """
