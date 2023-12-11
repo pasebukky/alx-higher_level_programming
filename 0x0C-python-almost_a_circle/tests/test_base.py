@@ -28,6 +28,9 @@ class TestBase(unittest.TestCase):
         b5 = Base()
         self.assertEqual(b5.id, 4)
 
+    def test_to_json_string_valid(self):
+        pass
+
 
 if __name__ == '__main__':
     unittest.main()

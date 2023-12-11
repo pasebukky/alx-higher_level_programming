@@ -2,6 +2,7 @@
 """ Define a class named Base """
 import json
 import csv
+import turtle
 
 
 class Base:
@@ -22,7 +23,7 @@ class Base:
     @staticmethod
     def to_json_string(list_dictionaries):
         """ Returns the JSON string representation of list_dictionaries """
-        if list_dictionaries is None or len(list_dictionaries) == 0:
+        if list_dictionaries is None or list_dictionaries == []:
             return []
         else:
             return json.dumps(list_dictionaries)
@@ -30,14 +31,13 @@ class Base:
     @classmethod
     def save_to_file(cls, list_objs):
         """ Write the JSON string representation of list_objs to a file """
-        if list_objs is None:
-            list_objs = []
-
         filename = cls.__name__ + ".json"
-        list_of_dicts = [obj.to_dictionary() for obj in list_objs]
-        json_string = cls.to_json_string(list_of_dicts)
-        with open(filename, 'w') as file:
-            file.write(json_string)
+        with open(filename, "w") as jsonfile:
+            if list_objs is None:
+                jsonfile.write("[]")
+            else:
+                list_dicts = [o.to_dictionary() for o in list_objs]
+                jsonfile.write(Base.to_json_string(list_dicts))
 
     @staticmethod
     def from_json_string(json_string):
@@ -94,16 +94,47 @@ class Base:
 
     @classmethod
     def load_from_file_csv(cls):
+        """
+        Return a list of class instantiated from a CSV file.
+        """
         filename = cls.__name__ + ".csv"
         try:
-            with open(filename, "r", newline="", encoding="utf-8") as file:
-                reader = csv.reader(file)
+            with open(filename, "r", newline="") as csvfile:
                 if cls.__name__ == "Rectangle":
-                    return [cls.create(id=int(row[0]), width=int(row[1]),
-                            height=int(row[2]), x=int(row[3]), y=int(row[4]))
-                            for row in reader]
-                elif cls.__name__ == "Square":
-                    return [cls.create(id=int(row[0]), size=int(row[1]),
-                            x=int(row[2]), y=int(row[3])) for row in reader]
-        except FileNotFoundError:
+                    fieldnames = ["id", "width", "height", "x", "y"]
+                else:
+                    fieldnames = ["id", "size", "x", "y"]
+                list_dicts = csv.DictReader(csvfile, fieldnames=fieldnames)
+                list_dicts = [dict([k, int(v)] for k, v in d.items())
+                              for d in list_dicts]
+                return [cls.create(**d) for d in list_dicts]
+        except IOError:
             return []
+
+    @staticmethod
+    def draw(list_rectangles, list_squares):
+        """Draw Rectangles and Squares using the turtle module."""
+        if list_rectangles is None:
+            list_rectangles = []
+        if list_squares is None:
+            list_squares = []
+
+        window = turtle.Screen()
+        pen = turtle.Pen()
+        figures = list_rectangles + list_squares
+
+        for fig in figures:
+            pen.up()
+            pen.goto(fig.x, fig.y)
+            pen.down()
+            pen.forward(fig.width)
+            pen.right(90)
+            pen.forward(fig.height)
+            pen.right(90)
+            pen.forward(fig.width)
+            pen.right(90)
+            pen.forward(fig.height)
+            pen.right(90)
+
+        window.exitonclick()
+

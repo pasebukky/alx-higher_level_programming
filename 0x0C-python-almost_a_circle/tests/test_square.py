@@ -20,6 +20,9 @@ class TestSquare(unittest.TestCase):
         s3 = Square(3, 1, 3)
         self.assertEqual(s3.id, 3)
 
+    def test_initialization_without_arguments(self):
+        self.assertRaises(TypeError, Square)
+
 
 if __name__ == '__main__':
     unittest.main()
