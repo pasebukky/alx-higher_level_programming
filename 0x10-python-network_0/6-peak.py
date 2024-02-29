@@ -9,18 +9,19 @@ def find_peak(list_of_integers):
     if not list_of_integers:
         return None
 
-    peak = list_of_integers[0]
+    return find_peak_recursive(list_of_integers, 0, len(list_of_integers) - 1)
 
-    for num in list_of_integers:
-        is_peak = True
 
-        for neighbor in list_of_integers:
-            if neighbor > num:
-                is_peak = False
-                break
+def find_peak_recursive(arr, low, high):
+    """
+    Find a peak recursion.
+    """
+    if low == high:
+        return arr[low]
 
-        if is_peak:
-            peak = num
-            break
+    mid = (low + high) // 2
 
-    return peak
+    if arr[mid] > arr[mid + 1]:
+        return find_peak_recursive(arr, low, mid)
+    else:
+        return find_peak_recursive(arr, mid + 1, high)
