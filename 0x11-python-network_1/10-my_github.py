@@ -13,6 +13,7 @@ from requests.auth import HTTPBasicAuth
 if __name__ == "__main__":
     username = sys.argv[1]
     token = sys.argv[2]
-    verification = HTTPBasicAuth(sys.argv[1], sys.argv[2])
-    response = requests.get("https://api.github.com/user", auth=verification)
+    url = "https://api.github.com/user"
+    verification = HTTPBasicAuth(username, token)
+    response = requests.get(url, auth=verification)
     print(response.json().get("id"))
